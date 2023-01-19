@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Графік світла</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="loader-container">
+            <img class="loader-img" src="loader.gif" alt="...loader">
+        </div>
+        <div class="zone-container-fluid">
+            <div class="header-container">
+                <div class="title-date-container">
+                    <h2>Сьогодні</h2>
+                    <h3 class="date"></h3>
+                </div>
+                <div class="group-container">
+                    <div class="group one">1</div>
+                    <div class="group two active">2</div>
+                    <div class="group three">3</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 zone-container">
+                    <div class="col-12 col-lg-11 col-md-11">
+                        <div class="zone-element first"></div>
+                        <div class="zone-element second"></div>
+                        <div class="zone-element third"></div>
+                        <div class="zone-element fourth"></div>
+                        <div class="zone-element fifth"></div>
+                        <div class="zone-element sixth"></div>
+                        <div class="zone-element seventh"></div>
+                        <div class="zone-element eighth"></div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="tomorrow">Завтра</h3>
+            <div class="row">
+                <div class="col-lg-4 zone-container">
+                    <div class="col-12 col-lg-11 col-md-11">
+                        <div class="zone-element tomorrow-first">00:00 - 03:00</div>
+                        <div class="zone-element tomorrow-second">03:00 - 06:00</div>
+                        <div class="zone-element tomorrow-third">06:00 - 09:00</div>
+                        <div class="zone-element tomorrow-fourth">09:00 - 12:00</div>
+                        <div class="zone-element tomorrow-fifth">12:00 - 15:00</div>
+                        <div class="zone-element tomorrow-sixth">15:00 - 18:00</div>
+                        <div class="zone-element tomorrow-seventh">18:00 - 21:00</div>
+                        <div class="zone-element tomorrow-eighth">21:00 - 00:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <style>
+        body {
+            background-color: #e1e7f0;
+            color: #38393b;
+        }
+        .title-date-container {
+            margin: 0px 25px 0px 0px;
+        }
+        .zone-container-fluid {
+            margin: 18px;
+        }
+        .zone-element {
+            width: inherit;
+            margin-top: 8px;
+            border-radius: 5px;
+            padding: 3px 0px 3px 15px;
+            font-style: italic;
+        }
+        .tomorrow {
+            margin-top: 18px;
+        }
+        .header-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .group-container {
+            display: flex;
+        }
+        .group {
+            margin: 8px 0 10px 22px;
+            border: 1mm solid #38393b;
+            border-radius: 5px;
+            padding: 10px 15px 8px 15px;
+            font-weight: bold;
+        }
+        .group:first-child {
+            margin: 8px 0 10px 0px;
+        }
+        .active {
+            border: 1mm solid #2754e8;
+            font-weight: bold;
+        }
+        .date {
+            font-size: 15px;
+        }
+        .loader-container {
+            position: absolute;
+            background-color: rgb(225, 231, 240, 0.8);
+            width: 100%;
+            height: 100%;
+        }
+        .loader-img {
+            position: absolute;
+            margin-top: 2%;
+            margin-left: 30%;
+            width: 150px;
+        }
+        .inactive {
+            border: none;
+            font-weight: normal;
+        }
+    </style>
+    <script type="text/javascript">
+        /**
+         * Time zones colors
+         */
+        const zones = {
+            green: 1,
+            yellow: 2,
+            red: 3
+        }
+
+        /**
+         *  Initial date group one
+         */
+        const initialDateGroupOne = {
+            date: new Date('2023','0','16'),
+            zones: [
+                zones.yellow,
+                zones.red,
+                zones.green,
+                zones.yellow,
+                zones.red,
+                zones.green,
+                zones.yellow,
+                zones.red,
+            ],
+            group: 1
+        }
+
+        /**
+         *  Initial date group two
+         */
+        const initialDateGroupTwo = {
+            date: new Date('2023','0','16'),
+            zones: [
+                zones.green,
+                zones.yellow,
+                zones.red,
+                zones.green,
+                zones.yellow,
+                zones.red,
+                zones.green,
+                zones.yellow,
+            ],
+            group: 2
+        }
+
+        /**
+         *  Initial date group three
+         */
+        const initialDateGroupThree = {
+            date: new Date('2023','0','16'),
+            zones: [
+                zones.red,
+                zones.green,
+                zones.yellow,
+                zones.red,
+                zones.green,
+                zones.yellow,
+                zones.red,
+                zones.green,
+            ],
+            group: 3
+        }
+
+        /**
+         * Get zone color
+         */
+        function getZoneColor(currentZone) {
+            switch (currentZone) {
+                case 1:
+                    return '50, 168, 82'
+                case 2:
+                    return '209, 193, 17'
+                case 3:
+                    return '222, 62, 27'
+            }
+        }
+
+        /**
+         * Calculate difference between two dates in days
+         */
+        function calculateDaysDiff(initialDate, currentDate) {
+            const diffTime = Math.abs(currentDate - initialDate);
+
+            return  Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        /**
+         * Calculate all day`s zones
+         */
+        function calculateAllDayZones(initialDate, daysDiff) {
+            const date = Array.from(initialDate.zones)
+            const divideResult = daysDiff / 3 - Math.floor(daysDiff / 3)
+            date.forEach(
+                (zone, index) => date[index] = calculateZone(zone, divideResult)
+            )
+
+            return date
+        }
+
+        /**
+         * Calculate zone value
+         */
+        function calculateZone(zone, divideResult) {
+            if (divideResult === 0) return zone
+            else if (divideResult > 0.3 && divideResult < 0.6) {
+                switch (zone) {
+                    case 1: return 3
+                    case 2: return 1
+                    case 3: return 2
+                }
+            } else if (divideResult > 0.6 && divideResult < 1) {
+                switch (zone) {
+                    case 1: return 2
+                    case 2: return 3
+                    case 3: return 1
+                }
+            }
+        }
+
+        /**
+         * Get current zone hour group
+         */
+        function getCurrentZoneHourGroup() {
+            switch (new Date().getHours()) {
+                case 0:
+                case 1:
+                case 2:
+                    return 'first'
+                case 3:
+                case 4:
+                case 5:
+                    return 'second'
+                case 6:
+                case 7:
+                case 8:
+                    return 'third'
+                case 9:
+                case 10:
+                case 11:
+                    return 'fourth'
+                case 12:
+                case 13:
+                case 14:
+                    return 'fifth'
+                case 15:
+                case 16:
+                case 17:
+                    return 'sixth'
+                case 18:
+                case 19:
+                case 20:
+                    return 'seventh'
+                case 21:
+                case 22:
+                case 23:
+                    return 'eighth'
+            }
+        }
+
+        /**
+         * Add active group
+         */
+        function addActiveGroup(group) {
+            document.getElementsByClassName('group active')[0].classList.remove('active')
+            switch (group) {
+                case 1: document.getElementsByClassName('group one')[0].classList.add('active')
+                    break
+                case 2: document.getElementsByClassName('group two')[0].classList.add('active')
+                    break
+                case 3: document.getElementsByClassName('group three')[0].classList.add('active')
+                    break
+            }
+        }
+
+        /**
+         * Add click events to groups
+         */
+        function addEventsToGroups() {
+            document.getElementsByClassName('one')[0].addEventListener("click", function (){
+                document.getElementsByClassName('loader-container')[0].style.display = 'block';
+                setTimeout(function (){initiate(initialDateGroupOne)}, 800)}
+            )
+            document.getElementsByClassName('two')[0].addEventListener("click", function (){
+                document.getElementsByClassName('loader-container')[0].style.display = 'block';
+                setTimeout(function (){initiate(initialDateGroupTwo)}, 800)}
+            )
+            document.getElementsByClassName('three')[0].addEventListener("click", function (){
+                document.getElementsByClassName('loader-container')[0].style.display = 'block';
+                setTimeout(function (){initiate(initialDateGroupThree)}, 800)}
+            )
+        }
+
+        /**
+         * Months sting value
+         */
+        const months = ["січня","лютого","березня","квітня","травня","червня","липня","серпня","вересня","жовтня","листопада","грудня"];
+
+        /**
+         * Main function
+         */
+        function initiate (initialDate = initialDateGroupTwo) {
+            /**
+             *  Current date
+             */
+            const date = new Date()
+            const currentDate = {
+                date: new Date(date.getFullYear(),date.getMonth(),date.getDate()),
+                zones: []
+            }
+            currentDate.zones = calculateAllDayZones(
+                initialDate,
+                calculateDaysDiff(initialDate.date, currentDate.date)
+            )
+
+            /**
+             *  Tomorrow date
+             */
+            const tomorrowDate = {
+                zones: calculateAllDayZones(
+                    initialDate,
+                    calculateDaysDiff(initialDate.date, currentDate.date) + 1
+                )
+            }
+
+            /**
+             * Add date on page
+             */
+            document.getElementsByClassName('date')[0].innerHTML =
+                currentDate.date.getDate()
+                + ' '
+                + months[currentDate.date.getMonth()]
+                + ' '
+                + currentDate.date.getFullYear()
+
+            /**
+             * Inactive all time zones
+             */
+            for (let i = 0; i < 8; i++) {
+                document.getElementsByClassName('zone-element')[i].classList.add('inactive')
+                document.getElementsByClassName('zone-element')[i].classList.remove('active')
+            }
+
+            /**
+             * Initiate time zone html content
+             */
+            document.getElementsByClassName('first')[0].innerHTML = "00:00 - 03:00"
+            document.getElementsByClassName('second')[0].innerHTML = "03:00 - 06:00"
+            document.getElementsByClassName('third')[0].innerHTML = "06:00 - 09:00"
+            document.getElementsByClassName('fourth')[0].innerHTML = "09:00 - 12:00"
+            document.getElementsByClassName('fifth')[0].innerHTML = "12:00 - 15:00"
+            document.getElementsByClassName('sixth')[0].innerHTML = "15:00 - 18:00"
+            document.getElementsByClassName('seventh')[0].innerHTML = "18:00 - 21:00"
+            document.getElementsByClassName('eighth')[0].innerHTML = "21:00 - 00:00"
+
+            /**
+             * Initiate time zone colors
+             */
+            document.getElementsByClassName('first')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[0]) + ', 0.5)'
+            document.getElementsByClassName('second')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[1]) + ', 0.5)'
+            document.getElementsByClassName('third')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[2]) + ', 0.5)'
+            document.getElementsByClassName('fourth')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[3]) + ', 0.5)'
+            document.getElementsByClassName('fifth')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[4]) + ', 0.5)'
+            document.getElementsByClassName('sixth')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[5]) + ', 0.5)'
+            document.getElementsByClassName('seventh')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[6]) + ', 0.5)'
+            document.getElementsByClassName('eighth')[0].style.backgroundColor = 'rgb(' + getZoneColor(currentDate.zones[7]) + ', 0.5)'
+
+            /**
+             * Initiate tomorrow time zone colors
+             */
+            document.getElementsByClassName('tomorrow-first')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[0]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-second')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[1]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-third')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[2]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-fourth')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[3]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-fifth')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[4]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-sixth')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[5]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-seventh')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[6]) + ', 0.5)'
+            document.getElementsByClassName('tomorrow-eighth')[0].style.backgroundColor = 'rgb(' + getZoneColor(tomorrowDate.zones[7]) + ', 0.5)'
+
+            /**
+             * Initiate active time zone
+             */
+            document.getElementsByClassName(getCurrentZoneHourGroup())[0].innerHTML =
+                document.getElementsByClassName(getCurrentZoneHourGroup())[0].innerHTML + " - Зараз ми тут"
+            document.getElementsByClassName(getCurrentZoneHourGroup())[0].classList.add('active')
+            document.getElementsByClassName(getCurrentZoneHourGroup())[0].classList.remove('inactive')
+
+            /**
+             * Initiate group buttons style
+             */
+            addActiveGroup(initialDate.group)
+            document.getElementsByClassName('group one')[0].style.backgroundColor = ''
+            document.getElementsByClassName('group two')[0].style.backgroundColor = ''
+            document.getElementsByClassName('group three')[0].style.backgroundColor = ''
+            document.getElementsByClassName('group active')[0].style.backgroundColor = document.getElementsByClassName(getCurrentZoneHourGroup())[0].style.backgroundColor
+
+            /**
+             * Remove loader
+             */
+            document.getElementsByClassName('loader-container')[0].style.display = 'none';
+        }
+
+        addEventsToGroups()
+        initiate()
+    </script>
+</html>

@@ -132,16 +132,16 @@
          *  Initial date group one
          */
         const initialDateGroupOne = {
-            date: new Date('2023','0','16'),
+            date: new Date('2023','0','30'),
             zones: [
                 zones.yellow,
-                zones.red,
                 zones.green,
-                zones.yellow,
                 zones.red,
+                zones.yellow,
                 zones.green,
-                zones.yellow,
                 zones.red,
+                zones.yellow,
+                zones.green,
             ],
             group: 1
         }
@@ -150,15 +150,15 @@
          *  Initial date group two
          */
         const initialDateGroupTwo = {
-            date: new Date('2023','0','16'),
+            date: new Date('2023','0','30'),
             zones: [
-                zones.green,
-                zones.yellow,
                 zones.red,
-                zones.green,
                 zones.yellow,
-                zones.red,
                 zones.green,
+                zones.red,
+                zones.yellow,
+                zones.green,
+                zones.red,
                 zones.yellow,
             ],
             group: 2
@@ -168,16 +168,16 @@
          *  Initial date group three
          */
         const initialDateGroupThree = {
-            date: new Date('2023','0','16'),
+            date: new Date('2023','0','30'),
             zones: [
-                zones.red,
                 zones.green,
+                zones.red,
                 zones.yellow,
-                zones.red,
                 zones.green,
+                zones.red,
                 zones.yellow,
-                zones.red,
                 zones.green,
+                zones.red,
             ],
             group: 3
         }
@@ -225,15 +225,15 @@
             if (divideResult === 0) return zone
             else if (divideResult > 0.3 && divideResult < 0.6) {
                 switch (zone) {
-                    case 1: return 3
-                    case 2: return 1
-                    case 3: return 2
-                }
-            } else if (divideResult > 0.6 && divideResult < 1) {
-                switch (zone) {
                     case 1: return 2
                     case 2: return 3
                     case 3: return 1
+                }
+            } else if (divideResult > 0.6 && divideResult < 1) {
+                switch (zone) {
+                    case 1: return 3
+                    case 2: return 1
+                    case 3: return 2
                 }
             }
         }

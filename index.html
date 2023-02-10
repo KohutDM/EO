@@ -15,15 +15,17 @@
         </div>
         <div class="zone-container-fluid">
             <div class="header-container">
-                <div class="title-date-container">
-                    <h2>Сьогодні</h2>
-                    <h3 class="date"></h3>
-                </div>
                 <div class="group-container">
                     <div class="group one">1</div>
-                    <div class="group two active">2</div>
-                    <div class="group three">3</div>
+                    <div class="group two ">2</div>
+                    <div class="group three active">3</div>
+                    <div class="group four">4</div>
+                    <div class="group five">5</div>
+                    <div class="group six">6</div>
                 </div>
+            </div>
+            <div class="title-date-container">
+                <h3 class="date"></h3>
             </div>
             <div class="row">
                 <div class="col-lg-4 zone-container">
@@ -85,7 +87,7 @@
             display: flex;
         }
         .group {
-            margin: 8px 0 10px 22px;
+            margin: 8px 0 10px 10px;
             border: 1mm solid #38393b;
             border-radius: 5px;
             padding: 10px 15px 8px 15px;
@@ -116,6 +118,12 @@
         .inactive {
             border: none;
             font-weight: normal;
+        }
+
+        @media only screen and (max-width:769px) {
+            .header-container {
+                justify-content: center;
+            }
         }
     </style>
     <script type="text/javascript">
@@ -152,6 +160,24 @@
         const initialDateGroupTwo = {
             date: new Date('2023','0','30'),
             zones: [
+                zones.yellow,
+                zones.green,
+                zones.red,
+                zones.yellow,
+                zones.green,
+                zones.red,
+                zones.yellow,
+                zones.green,
+            ],
+            group: 2
+        }
+
+        /**
+         *  Initial date group three
+         */
+        const initialDateGroupThree = {
+            date: new Date('2023','0','30'),
+            zones: [
                 zones.red,
                 zones.yellow,
                 zones.green,
@@ -161,13 +187,31 @@
                 zones.red,
                 zones.yellow,
             ],
-            group: 2
+            group: 3
         }
 
         /**
-         *  Initial date group three
+         *  Initial date group four
          */
-        const initialDateGroupThree = {
+        const initialDateGroupFour = {
+            date: new Date('2023','0','30'),
+            zones: [
+                zones.red,
+                zones.yellow,
+                zones.green,
+                zones.red,
+                zones.yellow,
+                zones.green,
+                zones.red,
+                zones.yellow,
+            ],
+            group: 4
+        }
+
+        /**
+         *  Initial date group five
+         */
+        const initialDateGroupFive = {
             date: new Date('2023','0','30'),
             zones: [
                 zones.green,
@@ -179,7 +223,25 @@
                 zones.green,
                 zones.red,
             ],
-            group: 3
+            group: 5
+        }
+
+        /**
+         *  Initial date group six
+         */
+        const initialDateGroupSix = {
+            date: new Date('2023','0','30'),
+            zones: [
+                zones.green,
+                zones.red,
+                zones.yellow,
+                zones.green,
+                zones.red,
+                zones.yellow,
+                zones.green,
+                zones.red,
+            ],
+            group: 6
         }
 
         /**
@@ -290,6 +352,12 @@
                     break
                 case 3: document.getElementsByClassName('group three')[0].classList.add('active')
                     break
+                case 4: document.getElementsByClassName('group four')[0].classList.add('active')
+                    break
+                case 5: document.getElementsByClassName('group five')[0].classList.add('active')
+                    break
+                case 6: document.getElementsByClassName('group six')[0].classList.add('active')
+                    break
             }
         }
 
@@ -309,6 +377,18 @@
                 document.getElementsByClassName('loader-container')[0].style.display = 'block';
                 setTimeout(function (){initiate(initialDateGroupThree)}, 800)}
             )
+            document.getElementsByClassName('four')[0].addEventListener("click", function (){
+                document.getElementsByClassName('loader-container')[0].style.display = 'block';
+                setTimeout(function (){initiate(initialDateGroupFour)}, 800)}
+            )
+            document.getElementsByClassName('five')[0].addEventListener("click", function (){
+                document.getElementsByClassName('loader-container')[0].style.display = 'block';
+                setTimeout(function (){initiate(initialDateGroupFive)}, 800)}
+            )
+            document.getElementsByClassName('six')[0].addEventListener("click", function (){
+                document.getElementsByClassName('loader-container')[0].style.display = 'block';
+                setTimeout(function (){initiate(initialDateGroupSix)}, 800)}
+            )
         }
 
         /**
@@ -319,7 +399,7 @@
         /**
          * Main function
          */
-        function initiate (initialDate = initialDateGroupTwo) {
+        function initiate (initialDate = initialDateGroupThree) {
             /**
              *  Current date
              */
@@ -347,7 +427,8 @@
              * Add date on page
              */
             document.getElementsByClassName('date')[0].innerHTML =
-                currentDate.date.getDate()
+                'Сьогодні '
+                + currentDate.date.getDate()
                 + ' '
                 + months[currentDate.date.getMonth()]
                 + ' '
@@ -412,6 +493,9 @@
             document.getElementsByClassName('group one')[0].style.backgroundColor = ''
             document.getElementsByClassName('group two')[0].style.backgroundColor = ''
             document.getElementsByClassName('group three')[0].style.backgroundColor = ''
+            document.getElementsByClassName('group four')[0].style.backgroundColor = ''
+            document.getElementsByClassName('group five')[0].style.backgroundColor = ''
+            document.getElementsByClassName('group six')[0].style.backgroundColor = ''
             document.getElementsByClassName('group active')[0].style.backgroundColor = document.getElementsByClassName(getCurrentZoneHourGroup())[0].style.backgroundColor
 
             /**
